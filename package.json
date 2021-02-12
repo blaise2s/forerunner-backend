@@ -32,10 +32,11 @@
     "typescript": "^4.1.5"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "yarn remove:types:mongoose && tsc",
     "dev": "nodemon",
     "prettier": "pretty-quick",
     "start": "node dist/forerunner-backend/server.js",
+    "remove:types:mongoose": "rm -rf node_modules/@types/mongoose",
     "test": "echo 'TODO: Add testing...'"
   },
   "husky": {
