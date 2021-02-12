@@ -1,33 +1,18 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import * as mongoose from 'mongoose';
 
-import checkEnv from './check-env';
-import userRoutes from './routes/user';
-import tasksRoutes from './routes/tasks';
+import { checkEnv } from './utils';
+import { mongooseDB } from './database';
+import { routes } from './routes';
 
 checkEnv();
-
-mongoose
-  .connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@${process.env.MONGO_HOST}/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true
-    }
-  )
-  .then(() => console.log('Connected to the DB'))
-  .catch(() => console.log('Failed to connect to the DB'));
+mongooseDB.connect();
 
 const app = express();
-const api = '/api';
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(`${api}/user`, userRoutes);
-app.use(`${api}/tasks`, tasksRoutes);
+app.use('', routes);
 
 const port = process.env.PORT ? +process.env.PORT : 4201;
 const host = process.env.HOST;

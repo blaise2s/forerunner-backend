@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-import checkAuth from '../middleware/check-auth';
-import Task, { Task as TaskData } from '../models/task';
+import { checkAuth } from '../middleware';
+import { Task, TaskData } from '../models';
 
-const tasksRouter = Router();
+export const tasksRoutes = Router();
 
-tasksRouter.get('', checkAuth, (_req, res) => {
+tasksRoutes.get('', checkAuth, (_req, res) => {
   Task.find().then(tasks => {
     Task.countDocuments().then(count => {
       res.json({
@@ -16,11 +16,11 @@ tasksRouter.get('', checkAuth, (_req, res) => {
   });
 });
 
-tasksRouter.get('/:id', checkAuth, (req, res) => {
+tasksRoutes.get('/:id', checkAuth, (req, res) => {
   Task.findOne({ _id: req.params.id }).then(task => res.json(task));
 });
 
-tasksRouter.post('', checkAuth, (req, res) => {
+tasksRoutes.post('', checkAuth, (req, res) => {
   const body: TaskData = req.body;
   const task = new Task({ ...body });
   task.save().then(savedTask => {
@@ -28,8 +28,6 @@ tasksRouter.post('', checkAuth, (req, res) => {
   });
 });
 
-tasksRouter.delete('/:id', checkAuth, (req, res) => {
+tasksRoutes.delete('/:id', checkAuth, (req, res) => {
   Task.deleteOne({ _id: req.params.id }).then(() => res.sendStatus(200));
 });
-
-export default tasksRouter;

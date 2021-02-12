@@ -2,11 +2,11 @@ import { Router } from 'express';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
-import User, { User as UserData, UserDocument } from '../models/user';
+import { User, UserData, UserDocument } from '../models';
 
-const userRouter = Router();
+export const userRoutes = Router();
 
-userRouter.post('/create', (req, res) => {
+userRoutes.post('/create', (req, res) => {
   const body: UserData = req.body;
   bcrypt.hash(body.password, 10).then(hash => {
     const newUser = new User({
@@ -28,7 +28,7 @@ userRouter.post('/create', (req, res) => {
   });
 });
 
-userRouter.post('/login', (req, res) => {
+userRoutes.post('/login', (req, res) => {
   const body: UserData = req.body;
   let fetchedUser: UserDocument;
   User.findOne({ email: body.email })
@@ -57,5 +57,3 @@ userRouter.post('/login', (req, res) => {
       return res.sendStatus(401);
     });
 });
-
-export default userRouter;

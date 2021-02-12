@@ -13,8 +13,6 @@ const checkRequired = () => {
   });
 };
 
-const checkEnv = () => {
+export const checkEnv = () => {
   checkRequired();
 };
-
-export default checkEnv;
