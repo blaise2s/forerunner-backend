@@ -17,7 +17,7 @@ userRoutes.post('/create', (req, res) => {
       .save()
       .then(result => {
         res.status(201).json({
-          id: result.id
+          _id: result.id
         });
       })
       .catch(error => {

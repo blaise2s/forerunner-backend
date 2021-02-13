@@ -24,10 +24,10 @@ tasksRoutes.post('', checkAuth, (req, res) => {
   const body: TaskData = req.body;
   const task = new Task({ ...body });
   task.save().then(savedTask => {
-    res.json({ id: savedTask.id });
+    res.status(201).json({ _id: savedTask.id });
   });
 });
 
 tasksRoutes.delete('/:id', checkAuth, (req, res) => {
-  Task.deleteOne({ _id: req.params.id }).then(() => res.sendStatus(200));
+  Task.findByIdAndDelete(req.params.id).then(() => res.sendStatus(200));
 });

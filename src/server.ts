@@ -1,18 +1,11 @@
-import * as bodyParser from 'body-parser';
-import * as express from 'express';
-
 import { checkEnv } from './utils';
 import { mongooseDB } from './database';
-import { routes } from './routes';
+import { instance } from './app';
 
 checkEnv();
 mongooseDB.connect();
 
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use('', routes);
+const app = instance();
 
 const port = process.env.PORT ? +process.env.PORT : 4201;
 const host = process.env.HOST;
